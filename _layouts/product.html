@@ -1,0 +1,53 @@
+---
+layout: default
+---
+
+<div class="product-page">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="{{ '/' | relative_url }}">Home</a> /
+      <a href="{{ '/category/' | append: page.category | relative_url }}">{{ page.category }}</a> /
+      {{ page.title }}
+    </div>
+
+    <div class="product-detail">
+      <div class="product-image">
+        {% if page.image %}
+        <img src="{{ page.image | relative_url }}" alt="{{ page.title }}">
+        {% else %}
+        <img src="{{ '/assets/images/default-product-image.jpg' | relative_url }}" alt="{{ page.title }}" class="product-placeholder-large">
+        {% endif %}
+      </div>
+
+      <div class="product-info">
+        <h1>{{ page.title }}</h1>
+
+        {% if page.sku %}
+        <p class="sku">SKU: {{ page.sku }}</p>
+        {% endif %}
+
+        <p class="price">${{ page.price }}</p>
+
+        {% if page.description %}
+        <div class="description">
+          {{ page.description }}
+        </div>
+        {% endif %}
+
+        {{ content }}
+
+        <div class="product-actions">
+          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+        </div>
+
+        {% if page.stock_status %}
+        <p class="stock-status">
+          Status: <span class="{% if page.stock_status == 'in-stock' %}in-stock{% else %}out-of-stock{% endif %}">
+            {{ page.stock_status | replace: '-', ' ' | capitalize }}
+          </span>
+        </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

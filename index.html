@@ -1,0 +1,50 @@
+---
+layout: default
+title: Home
+---
+
+<div class="homepage">
+  <section class="hero-section">
+    <div class="container">
+      <img src="{{ '/assets/images/store-image.jpg' | relative_url }}" alt="{{ site.data.site.business_name }}" class="hero-logo">
+      <h1>Welcome to {{ site.data.site.business_name }}</h1>
+      <p>{{ site.data.site.tagline }}</p>
+      <a href="#featured" class="btn btn-primary">Shop Now</a>
+    </div>
+  </section>
+
+  <section id="featured" class="featured-products">
+    <div class="container">
+      <h2>Featured Products</h2>
+      <div class="products-grid">
+        {% for product in site.products limit:8 %}
+        <div class="product-card">
+          {% if product.image %}
+          <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" class="product-image">
+          {% else %}
+          <img src="{{ '/assets/images/default-product-image.jpg' | relative_url }}" alt="{{ product.title }}" class="product-image product-placeholder">
+          {% endif %}
+
+          <h3>{{ product.title }}</h3>
+          <p class="price">${{ product.price }}</p>
+          <a href="{{ product.url | relative_url }}" class="btn">View Details</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="categories-section">
+    <div class="container">
+      <h2>Shop by Category</h2>
+      <div class="category-grid">
+        {% for category in site.data.categories %}
+        <a href="{{ '/category/' | append: category.slug | relative_url }}" class="category-card">
+          <h3>{{ category.name }}</h3>
+          <p>{{ category.subcategories | size }} subcategories</p>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>

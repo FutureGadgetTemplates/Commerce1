@@ -1,0 +1,105 @@
+# Main navigation categories with subcategories
+# Customize these placeholder names for each new e-commerce site
+# Replace "Category 1", "Category 1-1", etc. with your actual product categories
+
+# CATEGORY 1: Special/Featured Category
+# This category uses TAGS instead of traditional categorization
+# Products can appear here AND in their regular categories
+# Common examples: "Featured", "On Sale", "New Arrivals", "Limited Edition"
+- name: "Featured"
+  slug: "featured"
+  subcategories:
+    - name: "New Arrivals"
+      slug: "new-arrivals"
+    - name: "Featured Products"
+      slug: "featured-products"
+    - name: "Limited Edition"
+      slug: "limited-edition"
+    - name: "On Sale"
+      slug: "on-sale"
+    - name: "Category 1-5"
+      slug: "category-1-5"
+
+- name: "Category 2"
+  slug: "category-2"
+  subcategories:
+    - name: "Category 2-1"
+      slug: "category-2-1"
+    - name: "Category 2-2"
+      slug: "category-2-2"
+    - name: "Category 2-3"
+      slug: "category-2-3"
+    - name: "Category 2-4"
+      slug: "category-2-4"
+    - name: "Category 2-5"
+      slug: "category-2-5"
+
+- name: "Category 3"
+  slug: "category-3"
+  subcategories:
+    - name: "Category 3-1"
+      slug: "category-3-1"
+    - name: "Category 3-2"
+      slug: "category-3-2"
+    - name: "Category 3-3"
+      slug: "category-3-3"
+    - name: "Category 3-4"
+      slug: "category-3-4"
+    - name: "Category 3-5"
+      slug: "category-3-5"
+
+- name: "Category 4"
+  slug: "category-4"
+  subcategories:
+    - name: "Category 4-1"
+      slug: "category-4-1"
+    - name: "Category 4-2"
+      slug: "category-4-2"
+    - name: "Category 4-3"
+      slug: "category-4-3"
+    - name: "Category 4-4"
+      slug: "category-4-4"
+    - name: "Category 4-5"
+      slug: "category-4-5"
+
+- name: "Category 5"
+  slug: "category-5"
+  subcategories:
+    - name: "Category 5-1"
+      slug: "category-5-1"
+    - name: "Category 5-2"
+      slug: "category-5-2"
+    - name: "Category 5-3"
+      slug: "category-5-3"
+    - name: "Category 5-4"
+      slug: "category-5-4"
+    - name: "Category 5-5"
+      slug: "category-5-5"
+    - name: "Category 5-6"
+      slug: "category-5-6"
+
+- name: "Category 6"
+  slug: "category-6"
+  subcategories:
+    - name: "Category 6-1"
+      slug: "category-6-1"
+    - name: "Category 6-2"
+      slug: "category-6-2"
+    - name: "Category 6-3"
+      slug: "category-6-3"
+    - name: "Category 6-4"
+      slug: "category-6-4"
+
+- name: "Category 7"
+  slug: "category-7"
+  subcategories:
+    - name: "Category 7-1"
+      slug: "category-7-1"
+    - name: "Category 7-2"
+      slug: "category-7-2"
+    - name: "Category 7-3"
+      slug: "category-7-3"
+    - name: "Category 7-4"
+      slug: "category-7-4"
+    - name: "Category 7-5"
+      slug: "category-7-5"

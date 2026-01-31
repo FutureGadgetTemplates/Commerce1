@@ -1,0 +1,27 @@
+# Site configuration data
+# Customize these for each e-commerce site
+
+business_name: "Your Store Name"
+tagline: "Your store tagline goes here"
+phone: "1-800-123-4567"
+email: "contact@yourstore.com"
+
+# Social media
+social:
+  facebook: "#"
+  twitter: "#"
+  instagram: "#"
+  youtube: "#"
+
+# Footer links
+footer_links:
+  - title: "About Us"
+    url: "/about/"
+  - title: "Contact"
+    url: "/contact/"
+  - title: "Shipping"
+    url: "/shipping/"
+  - title: "Returns"
+    url: "/returns/"
+  - title: "Privacy Policy"
+    url: "/privacy/"

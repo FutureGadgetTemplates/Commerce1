@@ -1,0 +1,25 @@
+<nav class="main-navigation">
+  <div class="container">
+    <ul class="nav-menu">
+      {% for category in site.data.categories %}
+      <li class="nav-item">
+        <a href="{{ '/category/' | append: category.slug | relative_url }}">
+          {{ category.name }}
+        </a>
+
+        {% if category.subcategories %}
+        <ul class="dropdown-menu">
+          {% for subcategory in category.subcategories %}
+          <li>
+            <a href="{{ '/category/' | append: category.slug | append: '/' | append: subcategory.slug | relative_url }}">
+              {{ subcategory.name }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</nav>

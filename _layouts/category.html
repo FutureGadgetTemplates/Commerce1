@@ -1,0 +1,89 @@
+---
+layout: default
+---
+
+<div class="category-page">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="{{ '/' | relative_url }}">Home</a> /
+      {% if page.parent_category %}
+      <a href="{{ '/category/' | append: page.parent_category | relative_url }}">{{ page.parent_category_name }}</a> /
+      {% endif %}
+      {{ page.title }}
+    </div>
+
+    <h1>{{ page.title }}</h1>
+
+    {% if page.subcategory_list %}
+    <div class="subcategories">
+      <h2>Shop by Subcategory</h2>
+      <div class="subcategory-grid">
+        {% for subcategory in page.subcategory_list %}
+        <a href="{{ '/category/' | append: page.category_slug | append: '/' | append: subcategory.slug | relative_url }}" class="subcategory-card">
+          <h3>{{ subcategory.name }}</h3>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="products-section">
+      <h2>Products</h2>
+      <div class="products-grid">
+        {% if page.filter_by_tag %}
+          <!-- Tag-based category (e.g., "On Sale", "Featured") - filter by tag -->
+          {% assign filtered_products = "" | split: "" %}
+          {% for product in site.products %}
+            {% if product.tags contains page.filter_by_tag %}
+              {% assign filtered_products = filtered_products | push: product %}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          <!-- Traditional category - filter by category slug -->
+          {% assign filtered_products = site.products | where: "category", page.category_slug %}
+
+          {% if page.subcategory_slug %}
+            {% assign filtered_products = filtered_products | where: "subcategory", page.subcategory_slug %}
+          {% endif %}
+        {% endif %}
+
+        {% for product in filtered_products %}
+        <div class="product-card">
+          {% if product.image %}
+          <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" class="product-image">
+          {% else %}
+          <img src="{{ '/assets/images/default-product-image.jpg' | relative_url }}" alt="{{ product.title }}" class="product-image product-placeholder">
+          {% endif %}
+
+          <h3>{{ product.title }}</h3>
+
+          {% if product.tags contains "on-sale" and product.original_price %}
+          <p class="price">
+            <span class="sale-price">${{ product.price }}</span>
+            <span class="original-price">${{ product.original_price }}</span>
+          </p>
+          {% else %}
+          <p class="price">${{ product.price }}</p>
+          {% endif %}
+
+          {% if product.tags contains "limited-edition" %}
+          <span class="badge limited-edition">Limited Edition</span>
+          {% endif %}
+          {% if product.tags contains "new-arrival" %}
+          <span class="badge new-arrival">New</span>
+          {% endif %}
+          {% if product.tags contains "on-sale" %}
+          <span class="badge on-sale">Sale</span>
+          {% endif %}
+
+          <a href="{{ product.url | relative_url }}" class="btn">View Details</a>
+        </div>
+        {% endfor %}
+
+        {% if filtered_products.size == 0 %}
+        <p class="no-products">No products found in this category. Check back soon!</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

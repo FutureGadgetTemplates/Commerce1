@@ -1,0 +1,30 @@
+<header class="site-header">
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-content">
+        <div class="logo">
+          <a href="{{ '/' | relative_url }}">
+            <img src="{{ '/assets/images/store-image.jpg' | relative_url }}" alt="{{ site.data.site.business_name }}" class="logo-image">
+          </a>
+          <p class="tagline">{{ site.data.site.tagline }}</p>
+        </div>
+
+        <div class="header-actions">
+          <div class="search-bar">
+            <form action="{{ '/search/' | relative_url }}" method="get">
+              <input type="text" name="q" placeholder="Search products..." />
+              <button type="submit">Search</button>
+            </form>
+          </div>
+
+          <div class="user-actions">
+            <a href="#" class="account-link">Account</a>
+            <a href="#" class="cart-link">Cart (0)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include navigation.html %}
+</header>

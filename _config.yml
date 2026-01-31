@@ -1,0 +1,31 @@
+# Site settings
+title: "Commerce Template"
+description: "A flexible e-commerce template for Jekyll"
+url: ""
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+# Collections
+collections:
+  products:
+    output: true
+    permalink: /products/:path/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "products"
+    values:
+      layout: "product"
+
+# Exclude from processing
+exclude:
+  - README.md
+  - LICENSE
+  - .idea/
+  - Gemfile
+  - Gemfile.lock

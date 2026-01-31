@@ -1,0 +1,24 @@
+FAVICON PLACEHOLDERS
+
+This directory contains placeholder files for all your favicons.
+
+Replace these files with your actual favicon images:
+
+Required Files:
+- favicon.ico (16x16, 32x32, 48x48)
+- favicon-16x16.png
+- favicon-32x32.png
+- favicon-96x96.png
+- apple-touch-icon.png (180x180)
+- android-chrome-192x192.png
+- android-chrome-512x512.png
+- mstile-150x150.png (for Windows)
+
+Optional Files:
+- safari-pinned-tab.svg (monochrome SVG)
+
+Configuration Files:
+- site.webmanifest (PWA manifest)
+- browserconfig.xml (Windows tiles)
+
+See FAVICON_GUIDE.md for detailed instructions on creating and replacing these files.
