@@ -98,10 +98,7 @@ function updateCartPage() {
           <tr data-product-id="${item.productId}">
             <td class="product-cell">
               ${item.image ? `<img src="${item.image}" alt="${item.name}" class="cart-product-image">` : ''}
-              <div class="cart-product-info">
-                <span class="cart-product-name">${item.name}</span>
-                <span class="cart-product-id">${item.productId}</span>
-              </div>
+              <span class="cart-product-name">${item.name}</span>
             </td>
             <td class="price-cell">$${item.price.toFixed(2)}</td>
             <td class="quantity-cell">
@@ -213,19 +210,8 @@ function removeCartPageItem(productId) {
   border-radius: 4px;
 }
 
-.cart-product-info {
-  display: flex;
-  flex-direction: column;
-}
-
 .cart-product-name {
   font-weight: 500;
-}
-
-.cart-product-id {
-  font-size: 11px;
-  color: #999;
-  font-family: monospace;
 }
 
 .price-cell,
