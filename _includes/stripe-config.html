@@ -1,0 +1,10 @@
+<script>
+  window.StripeConfig = {
+    siteId: '{{ site.stripe.site_id | default: "default" }}',
+    mode: '{{ site.stripe.mode | default: "test" }}',
+    publishableKey: '{% if site.stripe.mode == "live" %}{{ site.stripe.publishable_key_live }}{% else %}{{ site.stripe.publishable_key_test }}{% endif %}',
+    checkoutUrl: '{% if site.stripe.mode == "live" %}{{ site.stripe.checkout_url_live }}{% else %}{{ site.stripe.checkout_url_test }}{% endif %}',
+    baseUrl: '{{ site.baseurl }}'
+  };
+</script>
+<script src="{{ '/assets/js/stripe-cart.js' | relative_url }}"></script>

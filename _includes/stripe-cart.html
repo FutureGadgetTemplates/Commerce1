@@ -1,0 +1,28 @@
+<div class="stripe-cart">
+  <button onclick="StripeCart.toggleCart()" class="cart-toggle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="9" cy="21" r="1"></circle>
+      <circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
+    <span class="cart-count">0</span>
+  </button>
+
+  <div id="cart-dropdown" class="dn">
+    <div class="cart-header">
+      <a href="{{ '/cart/' | relative_url }}"><h4>Shopping Cart</h4></a>
+    </div>
+    <div id="cart-items">
+      <p class="empty-cart-message">Your cart is empty</p>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total:</span>
+        <span class="cart-total">$0.00</span>
+      </div>
+      <button onclick="StripeCart.checkout()" class="checkout-btn" disabled>
+        Checkout
+      </button>
+    </div>
+  </div>
+</div>

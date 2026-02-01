@@ -49,34 +49,41 @@ layout: default
 
         {% for product in filtered_products %}
         <div class="product-card">
-          {% if product.image %}
-          <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" class="product-image">
-          {% else %}
-          <img src="{{ '/assets/images/default-product-image.jpg' | relative_url }}" alt="{{ product.title }}" class="product-image product-placeholder">
-          {% endif %}
+          <a href="{{ product.url | relative_url }}" class="product-image-link">
+            <div class="product-image-container">
+              {% if product.image %}
+              <img src="{{ product.image | relative_url }}" alt="{{ product.title }}" class="product-image">
+              {% else %}
+              <img src="{{ '/assets/images/default-product-image.jpg' | relative_url }}" alt="{{ product.title }}" class="product-image product-placeholder">
+              {% endif %}
+              <div class="product-badges">
+                {% if product.tags contains "limited-edition" %}
+                <span class="badge limited-edition">Limited Edition</span>
+                {% endif %}
+                {% if product.tags contains "new-arrival" %}
+                <span class="badge new-arrival">New</span>
+                {% endif %}
+                {% if product.tags contains "on-sale" %}
+                <span class="badge on-sale">Sale</span>
+                {% endif %}
+              </div>
+            </div>
+          </a>
 
           <h3>{{ product.title }}</h3>
 
           {% if product.tags contains "on-sale" and product.original_price %}
           <p class="price">
-            <span class="sale-price">${{ product.price }}</span>
             <span class="original-price">${{ product.original_price }}</span>
+            <span class="sale-price">${{ product.price }}</span>
           </p>
           {% else %}
           <p class="price">${{ product.price }}</p>
           {% endif %}
 
-          {% if product.tags contains "limited-edition" %}
-          <span class="badge limited-edition">Limited Edition</span>
-          {% endif %}
-          {% if product.tags contains "new-arrival" %}
-          <span class="badge new-arrival">New</span>
-          {% endif %}
-          {% if product.tags contains "on-sale" %}
-          <span class="badge on-sale">Sale</span>
-          {% endif %}
-
-          <a href="{{ product.url | relative_url }}" class="btn">View Details</a>
+          <button class="btn btn-primary add-to-cart-btn" onclick='StripeCart.addToCart({{ product.price_id | jsonify }}, {{ product.title | jsonify }}, {{ product.price }}, {{ product.image | relative_url | jsonify }})'>
+            Add to Cart
+          </button>
         </div>
         {% endfor %}
 

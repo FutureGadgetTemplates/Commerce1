@@ -3,7 +3,8 @@ title: "Example Product 1"
 price: 12.99
 category: category-2
 subcategory: category-2-1
-sku: "PROD-001"
+sku: "prod_TtgdiTb0ONQghg"
+price_id: "price_1SvtGGQ5RIRwqSo1rY3lpzNu"
 stock_status: in-stock
 description: "This product is in Category 2-1 but ALSO appears in Featured categories via tags."
 # TAGS: Add products to featured/special categories

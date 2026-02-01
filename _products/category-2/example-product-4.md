@@ -4,7 +4,8 @@ price: 59.99
 original_price: 89.99
 category: category-2
 subcategory: category-2-3
-sku: "PROD-004"
+sku: "prod_Ttgefwq89FIZvZ"
+price_id: "price_1SvtHQQ5RIRwqSo1dg5oW5kQ"
 stock_status: in-stock
 description: "This product demonstrates appearing in MULTIPLE categories via tags."
 tags:

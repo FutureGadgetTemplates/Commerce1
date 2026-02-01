@@ -22,6 +22,17 @@ defaults:
     values:
       layout: "product"
 
+# Stripe configuration
+stripe:
+  site_id: "commerce1_local"  # Unique identifier for this site instance
+  mode: "test"  # "test" or "live"
+  publishable_key_test: "pk_test_51SvqaWQ5RIRwqSo1eaFpMs4pe85krl6vrk23vR5s8m60ngHkormb99OnfDy76AYSapA6pzSfkNPoKZNr1hWr561200lhNDpAL4"
+#  publishable_key_test: "pk_test_YOUR_KEY_HERE"
+  publishable_key_live: "pk_live_YOUR_KEY_HERE"
+  checkout_url_test: "https://templatestandboxstripecheckout.netlify.app/.netlify/functions/create-checkout-session"
+#  checkout_url_test: "https://ADD-YOUR-SITE/.netlify/functions/create-checkout-session"
+  checkout_url_live: "https://ADD-YOUR-SITE/.netlify/functions/create-checkout-session"
+
 # Exclude from processing
 exclude:
   - README.md

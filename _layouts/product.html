@@ -26,7 +26,14 @@ layout: default
         <p class="sku">SKU: {{ page.sku }}</p>
         {% endif %}
 
+        {% if page.tags contains "on-sale" and page.original_price %}
+        <p class="price">
+          <span class="original-price">${{ page.original_price }}</span>
+          <span class="sale-price">${{ page.price }}</span>
+        </p>
+        {% else %}
         <p class="price">${{ page.price }}</p>
+        {% endif %}
 
         {% if page.description %}
         <div class="description">
@@ -37,7 +44,9 @@ layout: default
         {{ content }}
 
         <div class="product-actions">
-          <button class="btn btn-primary add-to-cart">Add to Cart</button>
+          <button class="btn btn-primary add-to-cart-btn" onclick='StripeCart.addToCart({{ page.price_id | jsonify }}, {{ page.title | jsonify }}, {{ page.price }}, {{ page.image | relative_url | jsonify }})'>
+            Add to Cart - ${{ page.price }}
+          </button>
         </div>
 
         {% if page.stock_status %}

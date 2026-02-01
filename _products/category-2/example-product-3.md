@@ -3,7 +3,8 @@ title: "Example Product 3"
 price: 79.99
 category: category-2
 subcategory: category-2-2
-sku: "PROD-003"
+sku: "prod_Ttgd2hG7LOwqBU"
+price_id: "price_1SvtH3Q5RIRwqSo1EaIPx5Mg"
 stock_status: in-stock
 description: "Regular product with no special tags - only appears in its main category."
 # No tags - this product ONLY appears in Category 2, Subcategory 2-2
