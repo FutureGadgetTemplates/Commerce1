@@ -47,6 +47,15 @@ All template documentation and guides are organized here for easy access.
 - Current image setup
 - File locations
 
+### Payments & Authentication
+
+📖 **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** - Firebase authentication setup
+- Creating a Firebase project
+- Enabling Google Sign-In
+- Setting up Firestore database
+- Security rules configuration
+- Troubleshooting common issues
+
 ### Favicons
 
 📖 **[FAVICON_GUIDE.md](FAVICON_GUIDE.md)** - Complete favicon setup
@@ -93,7 +102,8 @@ All template documentation and guides are organized here for easy access.
 3. Read **[MULTI_CATEGORY_SUMMARY.md](MULTI_CATEGORY_SUMMARY.md)** - Understand tagging system
 4. Read **[IMAGES_GUIDE.md](IMAGES_GUIDE.md)** - Add your images
 5. Read **[FAVICON_GUIDE.md](FAVICON_GUIDE.md)** - Setup favicons
-6. Start adding your products!
+6. Read **[FIREBASE_SETUP.md](FIREBASE_SETUP.md)** - Enable user accounts
+7. Start adding your products!
 
 ## Quick Links by Topic
 
@@ -110,6 +120,9 @@ All template documentation and guides are organized here for easy access.
 - [IMAGES_GUIDE.md](IMAGES_GUIDE.md)
 - [FAVICON_GUIDE.md](FAVICON_GUIDE.md)
 
+### Payments & Authentication
+- [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
+
 ### Reference
 - [STRUCTURE.md](STRUCTURE.md)
 - [TEMPLATE_GUIDE.md](TEMPLATE_GUIDE.md)
@@ -121,5 +134,6 @@ All template documentation and guides are organized here for easy access.
 3. **Products in multiple categories?** → [MULTI_CATEGORY_SUMMARY.md](MULTI_CATEGORY_SUMMARY.md)
 4. **Image problems?** → [IMAGES_GUIDE.md](IMAGES_GUIDE.md)
 5. **Favicon not showing?** → [FAVICON_GUIDE.md](FAVICON_GUIDE.md)
+6. **Sign-in not working?** → [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
 
 All guides are in Markdown format and can be viewed in any text editor or on GitHub.
