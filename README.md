@@ -1,26 +1,94 @@
 # E-Commerce Jekyll Template
 
-A flexible, customizable e-commerce template built with Jekyll. Perfect for quickly deploying online stores with a clean, modern design.
+A flexible, customizable e-commerce template built with Jekyll. Features a complete shopping cart system with Stripe payments and Google authentication.
 
-**This is a fully generic template** - all categories use placeholder names like "Category 1", "Category 1-1", etc. Simply replace these with your actual product categories to create any type of e-commerce store.
+## Architecture
 
-**NEW:** Products can appear in multiple categories! See `MULTI_CATEGORY_SUMMARY.md` for the quick guide.
+```mermaid
+flowchart TB
+    subgraph Client["Client (Static Jekyll Site)"]
+        UI[Jekyll Pages]
+        Cart[Shopping Cart<br/>localStorage]
+        Auth[Firebase Auth SDK]
+    end
+
+    subgraph Services["External Services"]
+        subgraph Netlify["Netlify"]
+            NF[Serverless Function<br/>create-checkout-session]
+        end
+
+        subgraph Stripe["Stripe"]
+            SC[Checkout Session]
+            SP[Payment Processing]
+        end
+
+        subgraph Firebase["Firebase"]
+            GA[Google Auth]
+            FS[Firestore Database]
+        end
+    end
+
+    %% Cart Flow
+    UI -->|Add to Cart| Cart
+    Cart -->|Checkout Request| NF
+    NF -->|Create Invoice| SC
+    SC -->|Redirect| SP
+    SP -->|Success/Cancel| UI
+
+    %% Auth Flow
+    UI -->|Sign In| Auth
+    Auth -->|Google OAuth| GA
+    GA -->|User Token| Auth
+    Auth -->|Store User Data| FS
+    Auth -->|Fetch Orders| FS
+
+    %% Order Flow
+    SP -->|Order Complete| UI
+    UI -->|Save Order| FS
+```
+
+### Data Flow
+
+| Flow | Description |
+|------|-------------|
+| **Cart** | Products added to localStorage → Checkout sends line items to Netlify → Netlify creates Stripe session → User redirected to Stripe payment |
+| **Auth** | User clicks Sign In → Firebase Auth opens Google popup → User authenticates → Token stored locally → User data saved to Firestore |
+| **Orders** | Payment completes → Order saved to Firestore → User can view order history in account page |
+
+### Technology Stack
+
+- **Frontend**: Jekyll (static site generator)
+- **Cart Storage**: Browser localStorage
+- **Payments**: Stripe Checkout (via Netlify Functions)
+- **Authentication**: Firebase Auth (Google Sign-In)
+- **Database**: Firestore (user profiles & order history)
+- **Hosting**: GitHub Pages / Netlify
+
+---
 
 ## Features
 
-- **7 Main Categories** with subcategories (fully customizable with generic placeholders)
+### Shopping & Payments
+- **Shopping Cart** - Add to cart, quantity controls, persistent localStorage
+- **Stripe Checkout** - Secure payment processing via Netlify serverless function
+- **Product Badges** - Automatic "Sale", "New", "Limited Edition" badges
+
+### User Accounts
+- **Google Sign-In** - One-click authentication via Firebase
+- **User Profiles** - Display name and avatar from Google account
+- **Order History** - Track past purchases in account page
+
+### Product Management
+- **7 Main Categories** with subcategories (fully customizable)
 - **Multi-category products** using tags (products can appear in multiple categories)
 - **Featured/Special categories** (On Sale, New Arrivals, Limited Edition, etc.)
-- **Logo support** with automatic placeholder images (default-product-image.jpg)
-- **Favicon setup** - Complete placeholder system for all devices and platforms
-- **Image management** organized in assets/images/
-- Responsive design
-- Product pages with detailed views
-- Category browsing system with dropdown navigation
-- Automatic badges and sale pricing
-- Easy customization through YAML data files
-- Clean, modern UI
-- Template-ready with generic "Category 1", "Category 2", etc. naming
+- **Sale Pricing** - Original price strikethrough with sale price display
+
+### Design & UX
+- **Responsive design** - Works on desktop, tablet, and mobile
+- **Logo support** with automatic placeholder images
+- **Favicon setup** - Complete placeholder system for all devices
+- **Clean, modern UI** - Professional e-commerce appearance
 
 ## Quick Start
 
@@ -35,6 +103,65 @@ A flexible, customizable e-commerce template built with Jekyll. Perfect for quic
    ```
 
 3. Open your browser to `http://localhost:4000`
+
+## Configuration
+
+### Stripe Setup
+
+1. Create a [Stripe account](https://stripe.com)
+2. Get your publishable key from Stripe Dashboard
+3. Deploy a Netlify function for checkout (see `/netlify/functions/`)
+4. Update `_config.yml`:
+
+```yaml
+stripe:
+  site_id: "your_site_id"        # Unique identifier for cart storage
+  mode: "test"                    # "test" or "live"
+  publishable_key_test: "pk_test_..."
+  publishable_key_live: "pk_live_..."
+  checkout_url_test: "https://your-site.netlify.app/.netlify/functions/create-checkout-session"
+  checkout_url_live: "https://your-site.netlify.app/.netlify/functions/create-checkout-session"
+```
+
+5. Add `price_id` to each product (from Stripe Dashboard):
+
+```yaml
+# In _products/your-product.md
+price_id: "price_1ABC..."  # Stripe Price ID
+```
+
+### Firebase Setup
+
+1. Create a [Firebase project](https://console.firebase.google.com)
+2. Enable **Google Sign-In** in Authentication → Sign-in method
+3. Create a **Firestore Database** in test mode
+4. Update `_config.yml`:
+
+```yaml
+firebase:
+  api_key: "AIza..."
+  auth_domain: "your-project.firebaseapp.com"
+  project_id: "your-project"
+  storage_bucket: "your-project.appspot.com"
+  app_id: "1:123:web:abc"
+```
+
+5. Set Firestore security rules:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /orders/{orderId} {
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+  }
+}
+```
 
 ## Documentation
 
@@ -96,24 +223,35 @@ Additional product details in markdown format.
 
 ```
 .
-├── _config.yml           # Jekyll configuration
+├── _config.yml              # Jekyll + Stripe + Firebase config
 ├── _data/
-│   ├── categories.yml    # Category structure
-│   └── site.yml          # Site settings
+│   ├── categories.yml       # Category structure
+│   └── site.yml             # Site settings
 ├── _includes/
-│   ├── header.html       # Site header
-│   ├── navigation.html   # Main navigation
-│   └── footer.html       # Site footer
+│   ├── header.html          # Site header with auth
+│   ├── navigation.html      # Main navigation
+│   ├── footer.html          # Site footer
+│   ├── stripe-cart.html     # Cart dropdown UI
+│   ├── stripe-config.html   # Stripe JS config
+│   └── firebase-config.html # Firebase SDK init
 ├── _layouts/
-│   ├── default.html      # Base layout
-│   ├── category.html     # Category pages
-│   └── product.html      # Product pages
-├── _products/            # Product files
+│   ├── default.html         # Base layout
+│   ├── category.html        # Category pages
+│   ├── product.html         # Product pages
+│   └── page.html            # Static pages
+├── _products/               # Product files (with price_id)
 ├── assets/
-│   ├── css/
+│   ├── css/style.css        # All styles
 │   └── js/
-├── category/             # Category pages
-└── index.html            # Homepage
+│       ├── stripe-cart.js   # Cart & checkout logic
+│       └── firebase-auth.js # Auth & user management
+├── account.html             # User account page
+├── cart.html                # Full cart page
+├── checkout/
+│   ├── success.html         # Payment success
+│   └── cancel.html          # Payment cancelled
+├── category/                # Category pages
+└── index.html               # Homepage
 ```
 
 ## Creating a New Store

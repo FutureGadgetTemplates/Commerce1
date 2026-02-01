@@ -1,0 +1,299 @@
+---
+layout: default
+title: My Account
+permalink: /account/
+---
+
+<div class="account-page">
+  <div class="container">
+    <div id="account-loading" class="account-loading">
+      <p>Loading...</p>
+    </div>
+
+    <div id="account-signin" class="account-signin" style="display: none;">
+      <div class="signin-prompt">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <h2>Sign in to view your account</h2>
+        <p>Access your order history and account settings</p>
+        <button class="btn btn-primary" onclick="FirebaseAuth.signIn()">Sign in with Google</button>
+      </div>
+    </div>
+
+    <div id="account-content" class="account-content" style="display: none;">
+      <div class="account-header">
+        <div class="user-profile">
+          <img id="profile-photo" src="" alt="Profile" class="profile-photo">
+          <div class="profile-info">
+            <h1 id="profile-name">User Name</h1>
+            <p id="profile-email">email@example.com</p>
+          </div>
+        </div>
+        <button class="btn btn-secondary" onclick="FirebaseAuth.signOut()">Sign Out</button>
+      </div>
+
+      <div class="account-sections">
+        <section id="orders" class="account-section">
+          <h2>Order History</h2>
+          <div id="orders-list" class="orders-list">
+            <p class="loading-orders">Loading orders...</p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function initAccountPage() {
+  if (typeof FirebaseAuth === 'undefined' || typeof firebaseAuth === 'undefined') {
+    setTimeout(initAccountPage, 100);
+    return;
+  }
+
+  firebaseAuth.onAuthStateChanged((user) => {
+    const loading = document.getElementById('account-loading');
+    const signin = document.getElementById('account-signin');
+    const content = document.getElementById('account-content');
+
+    loading.style.display = 'none';
+
+    if (user) {
+      signin.style.display = 'none';
+      content.style.display = 'block';
+
+      // Update profile info
+      const profilePhoto = document.getElementById('profile-photo');
+      profilePhoto.onerror = function() { this.src = '/assets/images/default-avatar.jpg'; };
+      profilePhoto.src = user.photoURL || '/assets/images/default-avatar.jpg';
+      document.getElementById('profile-name').textContent = user.displayName || 'User';
+      document.getElementById('profile-email').textContent = user.email;
+
+      // Load orders
+      loadOrders();
+    } else {
+      signin.style.display = 'block';
+      content.style.display = 'none';
+    }
+  });
+}
+
+async function loadOrders() {
+  const ordersList = document.getElementById('orders-list');
+
+  try {
+    const orders = await FirebaseAuth.getOrders();
+
+    if (orders.length === 0) {
+      ordersList.innerHTML = `
+        <div class="no-orders">
+          <p>You haven't placed any orders yet.</p>
+          <a href="/" class="btn btn-primary">Start Shopping</a>
+        </div>
+      `;
+      return;
+    }
+
+    ordersList.innerHTML = `
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orders.map(order => `
+            <tr>
+              <td class="order-id">${order.id.substring(0, 8)}...</td>
+              <td>${order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}</td>
+              <td>${order.items?.length || 0} item(s)</td>
+              <td>$${order.total?.toFixed(2) || '0.00'}</td>
+              <td><span class="order-status status-${order.status || 'completed'}">${order.status || 'Completed'}</span></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+  } catch (error) {
+    console.error('Error loading orders:', error);
+    ordersList.innerHTML = '<p class="error">Error loading orders. Please try again.</p>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initAccountPage);
+</script>
+
+<style>
+.account-page {
+  padding: 40px 0;
+  min-height: 60vh;
+}
+
+.account-loading,
+.account-signin {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.signin-prompt {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.signin-prompt svg {
+  margin-bottom: 20px;
+}
+
+.signin-prompt h2 {
+  margin-bottom: 10px;
+}
+
+.signin-prompt p {
+  color: #6c757d;
+  margin-bottom: 30px;
+}
+
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.profile-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.profile-info h1 {
+  margin: 0 0 5px 0;
+  font-size: 24px;
+}
+
+.profile-info p {
+  margin: 0;
+  color: #6c757d;
+}
+
+.account-section {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  padding: 30px;
+}
+
+.account-section h2 {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 40px;
+  color: #6c757d;
+}
+
+.no-orders .btn {
+  margin-top: 20px;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th,
+.orders-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.orders-table th {
+  font-weight: 600;
+  color: #2c3e50;
+  background: #f8f9fa;
+}
+
+.order-id {
+  font-family: monospace;
+  color: #6c757d;
+}
+
+.order-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-completed {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-cancelled {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+@media (max-width: 768px) {
+  .account-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .user-profile {
+    flex-direction: column;
+  }
+
+  .orders-table {
+    font-size: 14px;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 10px 8px;
+  }
+}
+</style>

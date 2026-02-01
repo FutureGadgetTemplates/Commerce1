@@ -1,0 +1,23 @@
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "{{ site.firebase.api_key }}",
+    authDomain: "{{ site.firebase.auth_domain }}",
+    projectId: "{{ site.firebase.project_id }}",
+    storageBucket: "{{ site.firebase.storage_bucket }}",
+    appId: "{{ site.firebase.app_id }}"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Initialize services
+  window.firebaseAuth = firebase.auth();
+  window.firebaseDb = firebase.firestore();
+</script>
+<script src="{{ '/assets/js/firebase-auth.js' | relative_url }}"></script>

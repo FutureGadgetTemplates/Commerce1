@@ -178,11 +178,25 @@ window.StripeCart = {
       console.log('Cart contents:', cart);
       console.log('Line items being sent:', lineItems);
 
+      // Build request body with optional user data
       const requestBody = {
         lineItems: lineItems,
         successUrl: window.location.origin + (window.StripeConfig.baseUrl || '') + '/checkout/success/',
         cancelUrl: window.location.origin + (window.StripeConfig.baseUrl || '') + '/checkout/cancel/'
       };
+
+      // Add user data if authenticated
+      if (window.FirebaseAuth?.currentUser) {
+        requestBody.userId = window.FirebaseAuth.currentUser.uid;
+        requestBody.userEmail = window.FirebaseAuth.currentUser.email;
+        requestBody.customerName = window.FirebaseAuth.currentUser.displayName;
+
+        const stripeCustomerId = window.FirebaseAuth.getStripeCustomerId();
+        if (stripeCustomerId) {
+          requestBody.customerId = stripeCustomerId;
+        }
+      }
+
       console.log('Full request body:', requestBody);
 
       // Send to checkout endpoint

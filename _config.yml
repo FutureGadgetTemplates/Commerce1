@@ -22,6 +22,14 @@ defaults:
     values:
       layout: "product"
 
+# Firebase configuration
+firebase:
+  api_key: "AIzaSyDU0gI3b9sI_qDNIOQbr8YbkK0Py64RiLc"
+  auth_domain: "commerce-template-7c1a1.firebaseapp.com"
+  project_id: "commerce-template-7c1a1"
+  storage_bucket: "commerce-template-7c1a1.firebasestorage.app"
+  app_id: "1:904327564993:web:af9e4adb42b96e7e734e40"
+
 # Stripe configuration
 stripe:
   site_id: "commerce1_local"  # Unique identifier for this site instance

@@ -15,10 +15,56 @@ permalink: /checkout/success/
   <p>Your payment was successful and your order is being processed.</p>
   <p>You will receive an email confirmation shortly.</p>
 
+  <p id="order-saved-msg" style="display: none; color: #28a745;">Order saved to your account!</p>
+
   <a href="{{ '/' | relative_url }}" class="btn btn-primary">Continue Shopping</a>
+  <a href="{{ '/account/' | relative_url }}" class="btn btn-secondary" id="view-orders-btn" style="display: none; margin-left: 10px;">View Orders</a>
 </div>
 
+<script>
+// Save order to Firestore if user is authenticated
+function saveOrderOnSuccess() {
+  if (typeof FirebaseAuth === 'undefined') {
+    setTimeout(saveOrderOnSuccess, 100);
+    return;
+  }
+
+  // Check if user is signed in
+  if (FirebaseAuth.currentUser) {
+    // Get cart data from localStorage before it was cleared
+    // We'll use URL params if available, otherwise create a basic order
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session_id');
+
+    const orderData = {
+      stripeSessionId: sessionId || 'direct_checkout',
+      status: 'completed',
+      total: 0, // Will be updated by webhook in production
+      items: []
+    };
+
+    FirebaseAuth.saveOrder(orderData).then(orderId => {
+      if (orderId) {
+        document.getElementById('order-saved-msg').style.display = 'block';
+        document.getElementById('view-orders-btn').style.display = 'inline-block';
+      }
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(saveOrderOnSuccess, 500);
+});
+</script>
+
 <style>
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
   .checkout-success {
     text-align: center;
     padding: 60px 20px;

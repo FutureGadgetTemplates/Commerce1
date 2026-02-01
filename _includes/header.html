@@ -18,7 +18,9 @@
           </div>
 
           <div class="user-actions">
-            <a href="#" class="account-link">Account</a>
+            <div id="auth-container">
+              <button class="sign-in-btn" onclick="FirebaseAuth.signIn()">Sign In</button>
+            </div>
             {% include stripe-cart.html %}
           </div>
         </div>
