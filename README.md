@@ -173,6 +173,7 @@ service cloud.firestore {
 - [Multi-Category Products](guides/MULTI_CATEGORY_SUMMARY.md)
 - [Images Guide](guides/IMAGES_GUIDE.md)
 - [Favicon Setup](guides/FAVICON_GUIDE.md)
+- [Firebase Setup](guides/FIREBASE_SETUP.md)
 - [Project Structure](guides/STRUCTURE.md)
 
 ## Customization
